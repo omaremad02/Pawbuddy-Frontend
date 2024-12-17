@@ -23,7 +23,7 @@
     border: 1px solid #d1d5db;
   }
   
-  .button.secondary:hover {
+  /* .button.secondary:hover {
     background-color: #e5e7eb;
   }
   
@@ -31,7 +31,7 @@
     background-color: #dc2626;
     color: white;
     border: none;
-  }
+  } */
   
   .button.danger:hover {
     background-color: #b91c1c;

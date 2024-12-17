@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import VideoBackground from "../common/VideoBackground";
-import Field from "../common/Field";
-import Button from "../common/Button";
-import Card from "../common/Card";
-import Title from "../common/Title";
-import styles from "./ApplyPage.module.css";
+import VideoBackground from "../../common/Videobackground";
+import Field from "../../common/Field";
+import Button from "../../common/Button";
+import Card from "../../common/Card";
+import Title from "../../common/Title";
+import styles from "./ApplyPage.css";
 
 const ApplyPage = () => {
   const [currentStep, setCurrentStep] = useState(0);

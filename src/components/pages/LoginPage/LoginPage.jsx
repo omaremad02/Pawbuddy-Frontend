@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import VideoBackground from "../common/VideoBackground";
-import Field from "../common/Field";
-import Button from "../common/Button";
-import Card from "../common/Card";
-import Title from "../common/Title";
-import styles from "./LoginPage.module.css";
+import VideoBackground from "../../common/Videobackground";
+import Field from "../../common/Field";
+import Button from "../../common/Button";
+import Card from "../../common/Card";
+import Title from "../../common/Title";
+import styles from "./LoginPage.css";
 
 const LoginPage = () => {
   const navigate = useNavigate();
