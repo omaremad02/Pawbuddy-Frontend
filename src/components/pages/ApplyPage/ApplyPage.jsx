@@ -4,7 +4,7 @@ import Field from "../../common/Field";
 import Button from "../../common/Button";
 import Card from "../../common/Card";
 import Title from "../../common/Title";
-import styles from "./ApplyPage.css";
+import styles from "./ApplyPage.module.css";
 
 const ApplyPage = () => {
   const [currentStep, setCurrentStep] = useState(0);

@@ -1,0 +1,20 @@
+.roleSelector {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Adjust spacing between roles */
+    margin: 20px 0;
+  }
+  
+  .roleLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .roleInput {
+    accent-color: #2563eb; /* Customize the radio button color */
+    cursor: pointer;
+  }
+  

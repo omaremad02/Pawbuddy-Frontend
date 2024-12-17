@@ -5,7 +5,8 @@ import Field from "../../common/Field";
 import Button from "../../common/Button";
 import Card from "../../common/Card";
 import Title from "../../common/Title";
-import styles from "./LoginPage.css";
+import RoleSelector from "../../common/RoleSelector";
+import styles from "./LoginPage.module.css";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -32,19 +33,11 @@ const LoginPage = () => {
             placeholder="Password"
             required
           />
-          <div className={styles.roleSelection}>
-            {["Admin", "Clinic", "Shelter"].map((role) => (
-              <label key={role}>
-                <input
-                  type="radio"
-                  value={role}
-                  checked={userRole === role}
-                  onChange={() => handleRoleChange(role)}
-                />
-                {role}
-              </label>
-            ))}
-          </div>
+          <RoleSelector
+            options={["Admin", "Clinic", "Shelter"]}
+            selectedRole={userRole}
+            onRoleChange={handleRoleChange}
+          />
           <Button
             label="Log In"
             onClick={() => navigate("/dashboard")}
@@ -54,9 +47,7 @@ const LoginPage = () => {
         </form>
         <p className={styles.footer}>
           Not with us?{" "}
-          <span className={styles.link} onClick={() => navigate("/apply")}>
-            Apply!
-          </span>
+          <span className={styles.link} onClick={() => navigate("/apply")}>Apply!</span>
         </p>
       </Card>
     </div>
