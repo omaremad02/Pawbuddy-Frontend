@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './Videobackground.css';
+import styles from './Videobackground.module.css';
 
 const VideoBackground = ({ src, type = 'video', alt = '', className = '' }) => {
   return (

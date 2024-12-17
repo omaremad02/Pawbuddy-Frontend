@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import VideoBackground from '../../common/Videobackground';
-import styles from "./HomePage.css";
+import styles from "./HomePage.module.css";
 
 const HomePage = () => {
   return (
