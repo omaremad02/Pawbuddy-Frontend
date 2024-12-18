@@ -1,9 +1,12 @@
+// src/components/pages/ApplyPage/ApplyPage.jsx
 import React, { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import VideoBackground from "../../common/Videobackground";
 import Field from "../../common/Field";
 import Button from "../../common/Button";
 import Card from "../../common/Card";
 import Title from "../../common/Title";
+import PageTransition from "../../common/PageTransition";
 import styles from "./ApplyPage.module.css";
 
 const ApplyPage = () => {
@@ -62,29 +65,35 @@ const ApplyPage = () => {
     },
   ];
 
-  const goToNextStep = () => setCurrentStep((prev) => Math.min(prev + 1, 2));
+  const goToNextStep = () => setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
   const goToPreviousStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
 
   return (
-    <div className={styles.container}>
-      <VideoBackground src="/video.mp4" />
-      <Card>
-        <Title text={steps[currentStep].title} level={2} />
-        <form className={styles.form}>
-          {steps[currentStep].content}
-          <div className={styles.navigationButtons}>
-            {currentStep > 0 && (
-              <Button label="Back" onClick={goToPreviousStep} />
-            )}
-            {currentStep < steps.length - 1 ? (
-              <Button label="Next" onClick={goToNextStep} />
-            ) : (
-              <Button label="Submit" type="submit" />
-            )}
-          </div>
-        </form>
-      </Card>
-    </div>
+    <PageTransition currentPage={currentStep}>
+      <div className={styles.container}>
+        <VideoBackground src="/video.mp4" />
+        <Card>
+          <Title text={steps[currentStep].title} level={2} />
+          <form className={styles.form}>
+            <AnimatePresence mode="wait">
+              <PageTransition currentPage={currentStep}>
+                {steps[currentStep].content}
+              </PageTransition>
+            </AnimatePresence>
+            <div className={styles.navigationButtons}>
+              {currentStep > 0 && (
+                <Button label="Back" onClick={goToPreviousStep} />
+              )}
+              {currentStep < steps.length - 1 ? (
+                <Button label="Next" onClick={goToNextStep} />
+              ) : (
+                <Button label="Submit" type="submit" />
+              )}
+            </div>
+          </form>
+        </Card>
+      </div>
+    </PageTransition>
   );
 };
 

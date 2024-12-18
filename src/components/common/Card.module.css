@@ -9,4 +9,6 @@
     min-width: 300px;
     margin: 0 auto;
     box-sizing: border-box;
+    max-height: 80vh;
+    overflow-y: auto;
   }
