@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './Field.module.css';
 
@@ -12,6 +12,14 @@ const Field = ({
   textarea = false,
   ...props
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const isPasswordField = type === 'password' && !textarea;
+
   return (
     <div className={styles.fieldContainer}>
       {label && (
@@ -19,26 +27,38 @@ const Field = ({
           {label} {required && <span className={styles.required}>*</span>}
         </label>
       )}
-      {textarea ? (
-        <textarea
-          className={styles.input}
-          placeholder={placeholder}
-          required={required}
-          value={value}
-          onChange={onChange}
-          {...props}
-        />
-      ) : (
-        <input
-          className={styles.input}
-          type={type}
-          placeholder={placeholder}
-          required={required}
-          value={value}
-          onChange={onChange}
-          {...props}
-        />
-      )}
+      <div className={styles.inputWrapper}>
+        {textarea ? (
+          <textarea
+            className={styles.input}
+            placeholder={placeholder}
+            required={required}
+            value={value}
+            onChange={onChange}
+            {...props}
+          />
+        ) : (
+          <input
+            className={styles.input}
+            type={isPasswordField && showPassword ? 'text' : type}
+            placeholder={placeholder}
+            required={required}
+            value={value}
+            onChange={onChange}
+            {...props}
+          />
+        )}
+        {isPasswordField && (
+          <button
+            type="button"
+            className={styles.eyeButton}
+            onClick={handleTogglePassword}
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+          >
+            {showPassword ? '🙈' : '👁️'}
+          </button>
+        )}
+      </div>
     </div>
   );
 };
