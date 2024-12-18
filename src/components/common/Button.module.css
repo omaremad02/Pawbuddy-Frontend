@@ -8,13 +8,13 @@
   }
   
   .button.primary {
-    background-color: #2563eb;
+    background-color: #ad8a48;
     color: white;
     border: none;
   }
   
   .button.primary:hover {
-    background-color: #1d4ed8;
+    background-color: #c0a676;
   }
   
   .button.secondary {

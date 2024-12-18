@@ -5,7 +5,7 @@ import VideoBackground from "../../common/Videobackground";
 import Field from "../../common/Field";
 import Button from "../../common/Button";
 import Card from "../../common/Card";
-import Title from "../../common/Title";
+// import Title from "../../common/Title";
 import PageTransition from "../../common/PageTransition";
 import styles from "./ApplyPage.module.css";
 
@@ -72,8 +72,8 @@ const ApplyPage = () => {
     <PageTransition currentPage={currentStep}>
       <div className={styles.container}>
         <VideoBackground src="/video.mp4" />
-        <Card>
-          <Title text={steps[currentStep].title} level={2} />
+        <Card size="large">
+          {/* <Title text={steps[currentStep].title} level={2} /> */}
           <form className={styles.form}>
             <AnimatePresence mode="wait">
               <PageTransition currentPage={currentStep}>

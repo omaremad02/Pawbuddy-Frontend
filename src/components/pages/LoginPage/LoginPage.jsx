@@ -27,8 +27,8 @@ const LoginPage = () => {
     <PageTransition currentPage={currentPage}>
       <div className={styles.container}>
         <VideoBackground src="/video.mp4" />
-        <Card>
-          <Title text="Log In" level={1} className={styles.title} />
+        <Card size="medium">
+          {/* <Title text="Log In" level={1} className={styles.title} /> */}
           <p className={styles.subtitle}>Please enter your credentials.</p>
           <form onSubmit={handleLogin} className={styles.form}>
             <Field label="Email" type="email" placeholder="Your email" required />

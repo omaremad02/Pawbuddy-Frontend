@@ -1,14 +1,28 @@
 .card {
-    background: #e9e1d4;
-    opacity: .85;
-    border-radius: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 60%;
-    max-width: 600px;
-    min-width: 300px;
-    margin: 0 auto;
-    box-sizing: border-box;
-    max-height: 80vh;
-    overflow-y: auto;
-  }
+  background: #e9e1d4;
+  opacity: 0.9;
+  border-radius: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.card--small {
+  width: 40%;
+  max-width: 400px;
+  max-height: 50vh;
+}
+
+.card--medium {
+  width: 60%;
+  max-width: 600px;
+  max-height: 70vh;
+}
+
+.card--large {
+  width: 80%;
+  max-width: 600px;
+  max-height: 90vh;
+}

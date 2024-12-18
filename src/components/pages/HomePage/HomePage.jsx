@@ -5,6 +5,7 @@ import VideoBackground from "../../common/Videobackground";
 import Title from "../../common/Title";
 import PageTransition from "../../common/PageTransition";
 import styles from "./HomePage.module.css";
+import Header from "../../Header/Header";
 
 const HomePage = () => {
   // eslint-disable-next-line
@@ -15,7 +16,8 @@ const HomePage = () => {
       <div className={styles.container}>
         <VideoBackground src="/video.mp4" />
         <div className={styles.content}>
-          <Title text="Pawbuddy" level={1} />
+        <Header />
+          {/* <Title text="Pawbuddy" level={1} /> */}
           <Link to="/login" className={styles.link}>
             Log In
           </Link>

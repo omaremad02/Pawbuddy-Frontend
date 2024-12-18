@@ -31,15 +31,16 @@
 
 .content a{
     font-size: 23px;
+    font-family: "Roboto Condensed", sans-serif;
     color: #fff;
     text-decoration: none;
-    border: 2px solid #2563eb;
+    border: 2px solid #a89e81;
     padding: 15px 25px;
     border-radius: 50px;
     transition: 0.3s;
 }
 
 .content a:hover{
-    background-color: #2563eb;
-    color:#000;
+    background-color: #c0a676;
+    color:#161616;
 }
