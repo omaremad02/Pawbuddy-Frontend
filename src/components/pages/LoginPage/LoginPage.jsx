@@ -45,7 +45,7 @@ const LoginPage = () => {
             />
             <Button
               label="Log In"
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/shelter-dashboard")}
               type="submit"
               className={styles.button}
             />

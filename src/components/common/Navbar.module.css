@@ -1,0 +1,78 @@
+/* src/common/Navbar.module.css */
+
+.navbarContainer {
+    background-color: #ad8a48; /* Blue color */
+    color: #fff;
+    position: relative;
+  }
+  
+  .navbarHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+  }
+  
+  .menuButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+  }
+  
+  .menuLine {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    margin: 4px 0;
+  }
+  
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .navbarMenu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #ad8a48;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .navbarMenu.open {
+    transform: translateX(0);
+  }
+  
+  .closeButton {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+  
+  .navButton {
+    background-color: #000000; /* Even darker blue for buttons */
+    color: #fff;
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .navButton:hover {
+    background-color: #ad8a48; /* Even darker on hover */
+  }
+  
