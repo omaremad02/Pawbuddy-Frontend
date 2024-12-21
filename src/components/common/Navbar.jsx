@@ -26,7 +26,7 @@ const Navbar = ({ title }) => {
         <button onClick={toggleNav} className={styles.closeButton}>
           &times;
         </button>
-        <button className={styles.navButton}>Dashboard</button>
+        <button className={styles.navButton}>Adoption Requests</button>
         <button className={styles.navButton}>Settings</button>
         <button className={styles.navButton}>Help</button>
       </div>
