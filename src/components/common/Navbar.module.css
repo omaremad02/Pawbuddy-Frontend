@@ -1,7 +1,7 @@
 /* src/common/Navbar.module.css */
 
 .navbarContainer {
-    background-color: #ad8a48; /* Blue color */
+    background-color: #ad8a48; /* Updated to match the new color scheme */
     color: #fff;
     position: relative;
   }
@@ -39,7 +39,7 @@
     left: 0;
     height: 100vh;
     width: 250px;
-    background-color: #ad8a48;
+    background-color: #916c3b; /* Slightly darker tone for the menu */
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -62,7 +62,7 @@
   }
   
   .navButton {
-    background-color: #000000; /* Even darker blue for buttons */
+    background-color: #a07338; /* Button color to complement the navbar */
     color: #fff;
     border: none;
     padding: 10px;
@@ -73,6 +73,6 @@
   }
   
   .navButton:hover {
-    background-color: #ad8a48; /* Even darker on hover */
+    background-color: #6b4f29; /* Hover color for buttons */
   }
   

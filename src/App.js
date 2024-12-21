@@ -5,6 +5,8 @@ import HomePage from "./components/pages/HomePage/HomePage";
 import LoginPage from "./components/pages/LoginPage/LoginPage";
 import ApplyPage from "./components/pages/ApplyPage/ApplyPage";
 import ShelterDashboard from "./components/pages/ShelterDashboard/ShelterDashboard";
+import SettingsPage from "./components/pages/ShelterDashboard/SettingsPage";
+import HelpPage from "./components/pages/ShelterDashboard/HelpPage";
 
 const App = () => {
   const location = useLocation(); // Get the current location for animation
@@ -15,7 +17,9 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/apply" element={<ApplyPage />} />
-        <Route path="/shelter-dashboard" element={<ShelterDashboard />} /> {/* New route */}
+        <Route path="/shelter-dashboard" element={<ShelterDashboard />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/help" element={<HelpPage />} />
       </Routes>
     </AnimatePresence>
   );
