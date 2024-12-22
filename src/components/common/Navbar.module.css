@@ -1,78 +1,85 @@
-/* src/common/Navbar.module.css */
+.container {
+  display: flex;
+  height: 100vh;
+}
 
-.navbarContainer {
-    background-color: #ad8a48; /* Updated to match the new color scheme */
-    color: #fff;
-    position: relative;
-  }
-  
-  .navbarHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-  }
-  
-  .menuButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-  }
-  
-  .menuLine {
-    width: 25px;
-    height: 3px;
-    background-color: #fff;
-    margin: 4px 0;
-  }
-  
-  .title {
-    font-size: 20px;
-    font-weight: bold;
-    margin: 0;
-  }
-  
-  .navbarMenu {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 250px;
-    background-color: #916c3b; /* Slightly darker tone for the menu */
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-  }
-  
-  .navbarMenu.open {
-    transform: translateX(0);
-  }
-  
-  .closeButton {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 24px;
-    margin-bottom: 20px;
-    cursor: pointer;
-    align-self: flex-start;
-  }
-  
-  .navButton {
-    background-color: #a07338; /* Button color to complement the navbar */
-    color: #fff;
-    border: none;
-    padding: 10px;
-    margin-bottom: 10px;
-    text-align: left;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .navButton:hover {
-    background-color: #6b4f29; /* Hover color for buttons */
-  }
-  
+.navbar {
+  background-color: #333;
+  color: white;
+  width: 70px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.navOpen {
+  width: 400px;
+}
+
+.menuButton {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  font-size: 16px;
+}
+
+.title {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.hidden {
+  display: none;
+}
+
+.navItems {
+  margin-top: 20px;
+}
+
+.navItem {
+  margin: 5px 0;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+}
+
+.icon {
+  font-size: 24px;
+}
+
+.submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.openSubmenu {
+  max-height: 200px;
+}
+
+.subItemButton {
+  background: #555;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+}
