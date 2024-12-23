@@ -1,42 +1,104 @@
-// src/components/pages/ShowAllPetsPage.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2"; // Import SweetAlert
 import Button from "../../../common/Button";
 import Table from "../../../common/Table";
 import styles from "./css/ShowAllPetsPage.module.css";
-import Field from "../../../common/Field";
-
-
-const initialPets = [
-  { id: 1, name: "Rocky", type: "Dog", breed:"Golden Retriever", age: 3, adoptionstatus: "For Adoption", vaccinationstatus: "Vaccinated", size: "57 cm", temperament:"Playful" },
-  { id: 2, name: "Momo", type: "Cat", breed:"Siamese", age: 2, adoptionstatus: "For Adoption", vaccinationstatus: "Not Vaccinated", size: "23 cm", temperament:"Chill" },
-  { id: 3, name: "Hamo", type: "Dog", breed:"German Shepherd", age: 3, adoptionstatus: "Adopted", vaccinationstatus: "Vaccinated", size: "63 cm", temperament:"Aggressive" },
-];
+import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Axios for making API calls
+import Spinner from "../../../common/Spinner";
+import endpoints from "../../../../utils/apiEndpoints";
 
 const ShowAllPetsPage = () => {
-  const [pets, setPets] = useState(initialPets);
-  const [editingPet, setEditingPet] = useState(null);
+  const [pets, setPets] = useState([]);
+  const [loading, setLoading] = useState(true); // For tracking the loading state
 
-  const deletePet = (id) => {
-    setPets(pets.filter((pet) => pet.id !== id));
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchPets = async () => {
+      try {
+        const response = await axios.post(endpoints.GET_PETS, {
+          shelterId: "60d21b4667d0d8992e610c86",
+        });
+        if (response.data.pets) {
+          const processedPets = response.data.pets.map((pet) => ({
+            ...pet,
+            age: calculateAge(pet.dob),
+          }));
+          setPets(processedPets);
+        }
+      } catch (error) {
+        console.error("Error fetching pets:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPets();
+  }, []);
+
+  const calculateAge = (dob) => {
+    if (!dob) return "Unknown";
+    const birthDate = new Date(dob);
+    if (isNaN(birthDate)) return "Invalid Date";
+
+    const today = new Date();
+    let years = today.getFullYear() - birthDate.getFullYear();
+    let months = today.getMonth() - birthDate.getMonth();
+
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+
+    if (today.getDate() < birthDate.getDate()) {
+      months -= 1;
+      if (months < 0) {
+        years -= 1;
+        months += 12;
+      }
+    }
+
+    if (years > 0 && months > 0) return `${years} years, ${months} months`;
+    if (years > 0) return `${years} years`;
+    if (months > 0) return `${months} months`;
+
+    return "Less than a month";
   };
 
-  const savePet = (updatedPet) => {
-    if (updatedPet.id) {
-      setPets(pets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet)));
-    } else {
-      setPets([...pets, { ...updatedPet, id: Date.now() }]);
-    }
-    setEditingPet(null);
+  const confirmAndDeletePet = async (id) => {
+    const petName = pets.find((pet) => pet.petId === id)?.name || "this pet";
+    // Show SweetAlert confirmation dialog
+    Swal.fire({
+      title: "Are you sure?",
+      text: `Do you really want to delete ${petName}? This action cannot be undone.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await axios.post(`${endpoints.DELETE_PET}`,{
+            petId:id
+          });
+          if (response.status === 200) {
+            Swal.fire("Deleted!", `${petName} has been deleted.`, "success");
+            setPets(pets.filter((pet) => pet.petId !== id));
+          }
+        } catch (error) {
+          console.error("Error deleting pet:", error);
+          Swal.fire("Error!", "An error occurred while deleting the pet.", "error");
+        }
+      }
+    });
   };
 
   const columns = [
     { header: "Name", accessor: "name" },
     { header: "Type", accessor: "type" },
     { header: "Breed", accessor: "breed" },
-    { header: "Adoption Status", accessor: "adoptionstatus" },
-    { header: "Vaccination Status", accessor: "vaccinationstatus" },
-    { header: "Size", accessor: "size" },
-    { header: "Temperament", accessor: "temperament" },
+    { header: "House Trained", accessor: "houseTrained" },
     { header: "Age", accessor: "age" },
     {
       header: "Actions",
@@ -45,12 +107,14 @@ const ShowAllPetsPage = () => {
         <>
           <Button
             label="Edit"
-            onClick={() => setEditingPet(pet)}
+            onClick={() => {
+              navigate(`/shelter/edit-pet/${pet.petId}`);
+            }}
             variant="secondary"
           />
           <Button
             label="Delete"
-            onClick={() => deletePet(pet.id)}
+            onClick={() => confirmAndDeletePet(pet.petId)}
             variant="danger"
           />
         </>
@@ -62,88 +126,17 @@ const ShowAllPetsPage = () => {
     <div className={styles.pageContainer}>
       <div className={styles.contentContainer}>
         <div className={styles.tableHeader}>
-          <h2>Pets Management</h2>
+          <h2>All Pets</h2>
           <Button
             label="Add Pet"
-            onClick={() => setEditingPet({
-              name: "",
-              type: "",
-              breed: "",
-              age: "",
-              adoptionstatus: "",
-              vaccinationstatus: "",
-              size: "",
-              temperament: "",
-            })}
+            onClick={() => navigate("/shelter/add-pet")}
             variant="primary"
           />
         </div>
-        <Table data={pets} columns={columns} />
-
-        {editingPet && (
-          <div className={styles.editContainer}>
-            <button
-              className={styles.closeButton}
-              onClick={() => setEditingPet(null)}
-            >
-              &times;
-            </button>
-            <h3>{editingPet.id ? "Edit Pet" : "Add Pet"}</h3>
-            <Field
-              label="Name"
-              value={editingPet.name}
-              onChange={(e) => setEditingPet({ ...editingPet, name: e.target.value })}
-            />
-            <Field
-              label="Type"
-              value={editingPet.type}
-              onChange={(e) => setEditingPet({ ...editingPet, type: e.target.value })}
-            />
-            <Field
-              label="Breed"
-              value={editingPet.breed}
-              onChange={(e) => setEditingPet({ ...editingPet, breed: e.target.value })}
-            />
-            <Field
-              label="Adoption Status"
-              value={editingPet.adoptionstatus}
-              onChange={(e) =>
-                setEditingPet({ ...editingPet, adoptionstatus: e.target.value })
-              }
-            />
-            <Field
-              label="Vaccination Status"
-              value={editingPet.vaccinationstatus}
-              onChange={(e) =>
-                setEditingPet({ ...editingPet, vaccinationstatus: e.target.value })
-              }
-            />
-            <Field
-              label="Size"
-              value={editingPet.size}
-              onChange={(e) => setEditingPet({ ...editingPet, size: e.target.value })}
-            />
-            <Field
-              label="Temperament"
-              value={editingPet.temperament}
-              onChange={(e) =>
-                setEditingPet({ ...editingPet, temperament: e.target.value })
-              }
-            />
-            <Field
-              label="Age"
-              type="number"
-              value={editingPet.age}
-              onChange={(e) =>
-                setEditingPet({ ...editingPet, age: parseInt(e.target.value, 10) })
-              }
-            />
-            <Button
-              label="Save"
-              onClick={() => savePet(editingPet)}
-              variant="primary"
-            />
-          </div>
+        {loading ? (
+          <Spinner /> // Show a loader while data is being fetched
+        ) : (
+          <Table data={pets} columns={columns} />
         )}
       </div>
     </div>

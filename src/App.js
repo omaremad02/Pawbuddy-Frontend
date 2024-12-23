@@ -6,11 +6,11 @@ import HomePage from "./components/pages/HomePage/HomePage";
 import LoginPage from "./components/pages/LoginPage/LoginPage";
 import HelpPage from "./components/pages/ShelterDashboard/HelpPage";
 import SettingsPage from "./components/pages/ShelterDashboard/SettingsPage";
-import ShelterDashboard from "./components/pages/ShelterDashboard/ShelterDashboard";
 import Shelter from "./components/pages/ShelterDashboard/ShelterLayout";
-import { AddPet } from "./components/pages/ShelterDashboard/pets/AddPet";
 import { AddStaff } from "./components/pages/ShelterDashboard/staff/AddStaff";
 import ShowAllPetsPage from "./components/pages/ShelterDashboard/pets/ShowAllPetsPage";
+import AddPetPage from "./components/pages/ShelterDashboard/pets/AddPetPage";
+import EditPetPage from "./components/pages/ShelterDashboard/pets/EditPetPage";
 
 const App = () => {
   const location = useLocation(); // Get the current location for animation
@@ -23,14 +23,14 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/apply" element={<ApplyPage />} />
-        <Route path="/shelter-dashboard" element={<ShelterDashboard />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/help" element={<HelpPage />} />
 
         <Route path="/shelter" element={<Shelter />}>
-          <Route index element={<AddPet />} /> {/* Default */}
-          <Route path="add-pet" element={<AddPet />} />
+          <Route index element={<ShowAllPetsPage />} /> {/* Default */}
           <Route path="show-all-pets" element={<ShowAllPetsPage />} />
+          <Route path="add-pet" element={<AddPetPage />} />
+          <Route path="edit-pet/:petId" element={<EditPetPage />} />
 
           <Route path="add-staff" element={<AddStaff />} />
         </Route>
