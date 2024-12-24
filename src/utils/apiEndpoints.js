@@ -9,6 +9,9 @@ const API_BASE_URL = "http://localhost:3000"; // Replace with your actual API ba
 // const API_BASE_URL = "http://localhost:5000"; // Replace with your actual API base URL
 
 const endpoints = {
+  // auth
+  LOGIN: `${API_BASE_URL}/api/auth/login`,  // Endpoint to add a pet
+  getUserWithToken: `${API_BASE_URL}/api/auth/getUserWithToken`,  // Endpoint to add a pet
 
     // pets 
   ADD_PET: `${API_BASE_URL}/api/pet/add_Pet`,  // Endpoint to add a pet
