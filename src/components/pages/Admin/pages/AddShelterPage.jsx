@@ -35,8 +35,6 @@ const AddShelterPage = () => {
       ],
     },
     shelterManagerData: {
-      firstName: '',
-      lastName: '',
       email: '',
       password: '',
       ssn: '',
@@ -62,8 +60,7 @@ const AddShelterPage = () => {
         if (!hour.To) errors[`To-${index}`] = "Closing time is required.";
       });
     } else if (activeStep === 1) {
-      if (!formData.shelterManagerData.firstName) errors.firstName = "First Name is required.";
-      if (!formData.shelterManagerData.lastName) errors.lastName = "Last Name is required.";
+ 
       if (!formData.shelterManagerData.email) errors.email = "Valid email is required.";
       if (!formData.shelterManagerData.password) errors.password = "Password is required.";
       if (!formData.shelterManagerData.ssn) errors.ssn = "SSN is required.";
@@ -277,28 +274,16 @@ const AddShelterPage = () => {
           {activeStep === 1 && (
             <Box>
               <TextField
-                label="First Name"
+                label="Username"
                 fullWidth
                 margin="normal"
-                value={formData.shelterManagerData.firstName}
+                value={formData.shelterManagerData.username}
                 onChange={(e) =>
-                  handleChange('shelterManagerData', 'firstName', e.target.value)
+                  handleChange('shelterManagerData', 'username', e.target.value)
                 }
                 required
-                error={isSubmitClicked &&!formData.shelterManagerData.firstName}
-                helperText={isSubmitClicked &&!formData.shelterManagerData.firstName && "First Name is required."}
-              />
-              <TextField
-                label="Last Name"
-                fullWidth
-                margin="normal"
-                value={formData.shelterManagerData.lastName}
-                onChange={(e) =>
-                  handleChange('shelterManagerData', 'lastName', e.target.value)
-                }
-                required
-                error={isSubmitClicked  &&!formData.shelterManagerData.lastName}
-                helperText={isSubmitClicked &&!formData.shelterManagerData.lastName && "Last Name is required."}
+                error={isSubmitClicked &&!formData.shelterManagerData.username}
+                helperText={isSubmitClicked &&!formData.shelterManagerData.username && "Username is required."}
               />
               <TextField
                 label="Email"
@@ -393,18 +378,7 @@ const AddShelterPage = () => {
                 error={isSubmitClicked &&! formData.shelterManagerData.phoneNumber}
                 helperText={isSubmitClicked &&!formData.shelterManagerData.phoneNumber && "Phone Number is required."}
               />
-              <TextField
-                label="Username"
-                fullWidth
-                margin="normal"
-                value={formData.shelterManagerData.username}
-                onChange={(e) =>
-                  handleChange('shelterManagerData', 'username', e.target.value)
-                }
-                required
-                error={isSubmitClicked &&!formData.shelterManagerData.username}
-                helperText={isSubmitClicked &&!formData.shelterManagerData.username && "Username is required."}
-              />
+          
             </Box>
           )}
 

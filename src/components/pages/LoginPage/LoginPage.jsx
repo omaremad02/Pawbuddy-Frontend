@@ -49,8 +49,9 @@ const LoginPage = () => {
       // Navigate based on the user's role
       if (user.role === "Admin") {
         navigate("/Admin");
-      } else {
-        navigate("/shelter-dashboard");
+      } else if (user.role === "ShelterStaff"|| user.role === "ShelterManager") {
+        
+        navigate("/shelter");
       }
     } catch (err) {
       // Check if error response exists and display the message

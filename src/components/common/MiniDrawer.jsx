@@ -16,9 +16,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Grid } from '@mui/material'; // Added Grid for row layout
+import { Grid, Button } from '@mui/material'; // Added Grid for row layout and Button for logout
 import { Outlet, useNavigate } from 'react-router-dom';
-
+import LogoutIcon from '@mui/icons-material/Logout';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -115,6 +115,11 @@ export default function MiniDrawer({ sections, title }) {
     navigate(route);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove the token from localStorage
+    navigate("/login"); // Navigate to the login page
+  };
+
   return (
     <Box sx={{ display: 'flex', margin: 0 }}>
       <CssBaseline />
@@ -180,6 +185,16 @@ export default function MiniDrawer({ sections, title }) {
             ))}
           </List>
         ))}
+        <Box sx={{ flexGrow: 1 }} /> {/* This pushes the logout button to the bottom */}
+        <Divider />
+        <Button
+          onClick={handleLogout}
+          variant="contained"
+          color="primary"
+          sx={{ width: '100%', marginTop: 'auto' }}
+        >
+          {open ? 'Logout' : <LogoutIcon />} {/* Show 'Logout' text when open, icon when closed */}
+        </Button>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 1 }}>
         <DrawerHeader />

@@ -22,6 +22,7 @@ import { CssBaseline } from "@mui/material";
 import { UpdateShelter } from "./components/pages/Admin/pages/UpdateShelter";
 import ShowAllUsers from "./components/pages/Admin/pages/showAllUsers";
 import UpdateUser from "./components/pages/Admin/pages/UpdateUser";
+import ShelterLayout from "./components/pages/ShelterDashboard/ShelterLayout";
 
 const App = () => {
 
@@ -48,7 +49,7 @@ const App = () => {
 
         </Route>
 
-      <Route path="/shelter" element={<Shelter />}>
+      <Route path="/shelter" element={<ShelterLayout />}>
           <Route index element={<ShowAllPetsPage />} /> {/* Default */}
           <Route path="show-all-pets" element={<ShowAllPetsPage />} />
           <Route path="add-pet" element={<AddPetPage />} />
