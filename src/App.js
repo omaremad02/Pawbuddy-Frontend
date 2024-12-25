@@ -10,35 +10,50 @@ import HomePage from "./components/pages/HomePage/HomePage";
 import LoginPage from "./components/pages/LoginPage/LoginPage";
 import AdminLayout from "./components/pages/Admin/pages/AdminLayout";
 import useCheckUserRole from "./utils/useCheckUserRole";
+import Shelter from "./components/pages/ShelterDashboard/ShelterLayout";
+import { AddStaff } from "./components/pages/ShelterDashboard/staff/AddStaff";
+import ShowAllPetsPage from "./components/pages/ShelterDashboard/pets/ShowAllPetsPage";
+import AddPetPage from "./components/pages/ShelterDashboard/pets/AddPetPage";
+import EditPetPage from "./components/pages/ShelterDashboard/pets/EditPetPage";
+import AddShelterPage from "./components/pages/Admin/pages/AddShelterPage";
+import ShelterTable from "./components/pages/Admin/pages/showAllShelters";
+import ShowAllShelters from "./components/pages/Admin/pages/showAllShelters";
+import { CssBaseline } from "@mui/material";
 
 const App = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  // Define the proceed function to navigate based on user role
-  const proceed = (user) => {
-    if (user.role === "Admin") {
-      navigate("/Admin");
-    } else {
-      navigate("/");
-    }
-  };
-
-  const { loading } = useCheckUserRole(proceed);
-
-  if (loading) {
-    return <Spinner />; // Show spinner while loading
-  }
-
+ 
   return (
+<>
+<CssBaseline/>
+
     <AnimatePresence mode="wait" initial={false}>
-      <Routes location={location} key={location.pathname}>
+      <Routes >
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/apply" element={<ApplyPage />} />
         <Route path="/Admin" element={<AdminLayout />} />
+
+        <Route path="/Admin" element={<AdminLayout />}>
+          <Route index element={<ShowAllShelters />} /> {/* Default */}
+          <Route path="add-shelter" element={<AddShelterPage />} />
+          <Route path="show-all-shelters" element={<ShowAllShelters />} />
+
+        </Route>
+
+      <Route path="/shelter" element={<Shelter />}>
+          <Route index element={<ShowAllPetsPage />} /> {/* Default */}
+          <Route path="show-all-pets" element={<ShowAllPetsPage />} />
+          <Route path="add-pet" element={<AddPetPage />} />
+          <Route path="edit-pet/:petId" element={<EditPetPage />} />
+
+          <Route path="add-staff" element={<AddStaff />} />
+        </Route>
       </Routes>
+
+
     </AnimatePresence>
+    </>
   );
 };
 

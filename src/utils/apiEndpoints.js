@@ -13,6 +13,11 @@ const endpoints = {
   LOGIN: `${API_BASE_URL}/api/auth/login`,  // Endpoint to add a pet
   getUserWithToken: `${API_BASE_URL}/api/auth/getUserWithToken`,  // Endpoint to add a pet
 
+
+  // shelter 
+  ADD_SHELTER: `${API_BASE_URL}/api/shelter/add-shelter-manager`,  // Endpoint to add a pet
+  GET_ALL_SHELTERS: `${API_BASE_URL}/api/shelter/get-all-shelters`,  // Endpoint to add a pet
+
     // pets 
   ADD_PET: `${API_BASE_URL}/api/pet/add_Pet`,  // Endpoint to add a pet
   EDIT_PET:  `${API_BASE_URL}/api/pet/update_pet/`, // Endpoint to edit a pet, dynamically accept pet ID
