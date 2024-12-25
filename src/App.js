@@ -19,6 +19,7 @@ import AddShelterPage from "./components/pages/Admin/pages/AddShelterPage";
 import ShelterTable from "./components/pages/Admin/pages/showAllShelters";
 import ShowAllShelters from "./components/pages/Admin/pages/showAllShelters";
 import { CssBaseline } from "@mui/material";
+import { UpdateShelter } from "./components/pages/Admin/pages/UpdateShelter";
 
 const App = () => {
 
@@ -38,6 +39,7 @@ const App = () => {
           <Route index element={<ShowAllShelters />} /> {/* Default */}
           <Route path="add-shelter" element={<AddShelterPage />} />
           <Route path="show-all-shelters" element={<ShowAllShelters />} />
+          <Route path="update-shelter/:shelterId" element={<UpdateShelter />} />
 
         </Route>
 

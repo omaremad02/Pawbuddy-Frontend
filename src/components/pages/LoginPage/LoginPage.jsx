@@ -48,7 +48,7 @@ const LoginPage = () => {
 
       // Navigate based on the user's role
       if (user.role === "Admin") {
-        navigate("/admin-dashboard");
+        navigate("/Admin");
       } else {
         navigate("/shelter-dashboard");
       }
