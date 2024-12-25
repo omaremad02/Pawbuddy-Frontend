@@ -159,6 +159,15 @@ const AddShelterPage = () => {
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   return (
+    <Box
+    mt={4}
+    sx={{
+      height: '70vh', // Adjust height as needed
+      overflowY: 'auto', // Enable vertical scrolling
+      padding: 2,
+      borderRadius: '8px',
+    }}
+  >
       <Container maxWidth="md">
         <Typography variant="h4" gutterBottom>
           Add Shelter Manager
@@ -423,6 +432,7 @@ const AddShelterPage = () => {
         </Box>
       </Box>
       </Container>
+      </Box>
   );
 };
 

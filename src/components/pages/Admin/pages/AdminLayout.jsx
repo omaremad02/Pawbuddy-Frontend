@@ -5,7 +5,7 @@ import MiniDrawer from "../../../common/MiniDrawer";
 import DomainAddIcon from "@mui/icons-material/DomainAdd";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import endpoints from "../../../../utils/apiEndpoints";
-
+import GroupIcon from '@mui/icons-material/Group';
 const sections = [
   {
     label: "Section 1",
@@ -19,6 +19,12 @@ const sections = [
         text: "Show All Shelters",
         icon: <HomeWorkIcon />,
         route: "show-all-shelters",
+      },
+
+      {
+        text: "Show All Users",
+        icon: <GroupIcon />,
+        route: "show-all-users",
       },
     ],
   },

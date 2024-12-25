@@ -17,6 +17,11 @@ const endpoints = {
   LOGIN: `${API_BASE_URL}/api/auth/login`,  // Endpoint to add a pet
   getUserWithToken: `${API_BASE_URL}/api/auth/getUserWithToken`,  // Endpoint to add a pet
 
+// users
+GET_ALL_USERS: `${API_BASE_URL}/api/user/get-all-users`,  // Endpoint to add a pet
+UPDATE_USER:(id)=> `${API_BASE_URL}/api/user/update-user/${id}`,  // Endpoint to add a pet
+DELETE_USER:(id)=> `${API_BASE_URL}/api/user/delete-user/${id}`,  // Endpoint to add a pet
+
 
   // shelter 
   ADD_SHELTER: `${API_BASE_URL}/api/shelter/add-shelter-manager`,  // Endpoint to add a pet
