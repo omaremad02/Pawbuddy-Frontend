@@ -16,7 +16,7 @@ import ShelterLayout from "./components/pages/ShelterDashboard/layouts/shelterSt
 import AddPetPage from "./components/pages/ShelterDashboard/pets/AddPetPage";
 import EditPetPage from "./components/pages/ShelterDashboard/pets/EditPetPage";
 import ShowAllPetsPage from "./components/pages/ShelterDashboard/pets/ShowAllPetsPage";
-import { AddStaff } from "./components/pages/ShelterDashboard/staff/AddStaff";
+import AddStaffPage, { AddStaff } from "./components/pages/ShelterDashboard/staff/AddStaff";
 import ShowAllShelterStaff from "./components/pages/ShelterDashboard/staff/showAllShelterStaff";
 import ShelterManagerLayout from "./components/pages/ShelterDashboard/layouts/shelterManagerLayout/ShelterManagerLayout";
 import ShelterStaffLayout from "./components/pages/ShelterDashboard/layouts/shelterStaffLayout/ShelterStaffLayout";
@@ -51,7 +51,7 @@ const App = () => {
             <Route path="show-all-pets" element={<ShowAllPetsPage />} />
             <Route path="add-pet" element={<AddPetPage />} />
             <Route path="edit-pet/:petId" element={<EditPetPage />} />
-            <Route path="add-staff" element={<AddStaff />} />
+            <Route path="add-shelter-staff" element={<AddStaffPage />} />
             {/* // shelters staff */}
             <Route
               path="show-all-shelter-staff"
@@ -65,7 +65,6 @@ const App = () => {
             <Route path="show-all-pets" element={<ShowAllPetsPage />} />
             <Route path="add-pet" element={<AddPetPage />} />
             <Route path="edit-pet/:petId" element={<EditPetPage />} />
-            <Route path="add-staff" element={<AddStaff />} />
         
           </Route>
         </Routes>

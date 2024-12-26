@@ -1,7 +1,6 @@
 import Swal from "sweetalert2";
 
 export const navigateBasedOnRole = (user, navigate) => {
-  console.log(user);
 
   if (user && user.role) {
     // Navigate based on the user's role
@@ -38,5 +37,4 @@ export const navigateBasedOnRole = (user, navigate) => {
     });
   }
 
-  return user;
 };

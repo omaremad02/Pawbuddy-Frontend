@@ -26,7 +26,7 @@ import {
     useEffect(() => {
       const fetchStaff = async () => {
         try {
-          const response = await axios.get(endpoints.GET_SHELTER_STAFF, {
+          const response = await axios.get(endpoints.GET_ALL_STAFF, {
             headers: endpoints.getAuthHeader(),
           });
           if (response.data.staffList) {

@@ -1,31 +1,28 @@
+import React, { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { Box, CircularProgress } from "@mui/material";
 import DomainAddIcon from "@mui/icons-material/DomainAdd";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import PetsIcon from "@mui/icons-material/Pets";
-import { Box, CircularProgress } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import useUser from "../../../../../utils/hooks/fetchUserHook";
 import MiniDrawer from "../../../../common/MiniDrawer";
-import { navigateBasedOnRole } from "../../../../../utils/navigation/navigateBasedOnRole";
+import useUser from "../../../../../utils/hooks/fetchUserHook";
 
 const sections = [
   {
     label: "Shelter Staffs",
     items: [
+      { text: "Add Shelter Staff", route: "add-staff", icon: <DomainAddIcon /> },
+      { text: "Show All Pets", icon: <HomeWorkIcon />, route: "show-all-pets" },
+      { text: "Add Pet", icon: <PetsIcon />, route: "add-pet" },
+      {
+        text: "Show All Shelter Staff",
+        icon: <HomeWorkIcon />,
+        route: "show-all-shelter-staff",
+      },
       {
         text: "Add Shelter Staff",
-        route: "add-staff",
-        icon: <DomainAddIcon />,
-      },
-      {
-        text: "Show All Pets",
         icon: <HomeWorkIcon />,
-        route: "show-all-pets",
-      },
-      {
-        text: "Add Pet",
-        icon: <PetsIcon />,
-        route: "add-pet",
+        route: "add-shelter-staff",
       },
     ],
   },
@@ -33,22 +30,29 @@ const sections = [
 
 const ShelterManagerLayout = () => {
   const navigate = useNavigate();
-  const { user: fetchedUser, loading } = useUser();
 
-  const [shelter, setShelter] = useState(null); // Store user data here
-
-  useEffect(() => {
-    if (fetchedUser) {
-      // Fetch user data only once and set it to state
-      navigateBasedOnRole(fetchedUser,navigate);
-
-      // Handle user authorization based on the role
-      if (fetchedUser.role !== "ShelterManager" && fetchedUser.role !== "ShelterStaff") {
+  // Memoize the success and error callbacks to prevent re-creation
+  const onSuccess = useCallback(
+    (user) => {
+      if (user.role !== "ShelterManager") {
         alert("Unauthorized access. Please log in.");
         navigate("/login");
       }
-    }
-  }, [fetchedUser, navigate]); // Runs only when fetchedUser changes
+      console.log("User successfully fetched:", user);
+    },
+    [navigate]
+  );
+
+  const onError = useCallback(
+    (error) => {
+      console.error("Error occurred:", error);
+      alert("An error occurred. Redirecting to login.");
+      navigate("/login");
+    },
+    [navigate]
+  );
+
+  const { user: shelter, loading } = useUser(onSuccess, onError);
 
   if (loading) {
     return (
@@ -65,7 +69,7 @@ const ShelterManagerLayout = () => {
 
   return (
     <MiniDrawer
-      title={`Hello ${fetchedUser?.username || ""}`}
+      title={`Hello ${shelter?.username || ""}`}
       sections={sections}
     />
   );

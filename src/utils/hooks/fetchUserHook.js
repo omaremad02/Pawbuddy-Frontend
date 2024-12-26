@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import endpoints from "../apiEndpoints";
 
 const useUser = (onSuccess, onError) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -14,7 +12,7 @@ const useUser = (onSuccess, onError) => {
       if (!token) {
         const error = new Error("Token is missing. Please log in.");
         setError(error);
-        onError?.(error); // Call the error callback
+        if (onError) onError(error);
         setLoading(false);
         return;
       }
@@ -29,20 +27,20 @@ const useUser = (onSuccess, onError) => {
 
         if (response.ok) {
           setUser(data.user);
-          onSuccess?.(data.user); // Call the success callback with user data
+          if (onSuccess) onSuccess(data.user);
         } else {
-          throw new Error("Invalid token or unauthorized access.");
+          throw new Error(data.message || "Unauthorized access.");
         }
       } catch (err) {
         setError(err);
-        onError?.(err); // Call the error callback
+        if (onError) onError(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUser();
-  }, [navigate, onSuccess, onError]);
+    fetchUser(); // Call the fetch function once
+  }, []); // Empty dependency array ensures it runs only once
 
   return { user, error, loading };
 };

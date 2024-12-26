@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { CircularProgress, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MiniDrawer from "../../../common/MiniDrawer";
@@ -6,21 +6,20 @@ import DomainAddIcon from "@mui/icons-material/DomainAdd";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import GroupIcon from "@mui/icons-material/Group";
 import useUser from "../../../../utils/hooks/fetchUserHook";
-import { navigateBasedOnRole } from "../../../../utils/navigation/navigateBasedOnRole";
 
 const sections = [
   {
     label: "Section 1",
     items: [
       {
-        text: "Add shelter",
+        text: "Add Admin",
         icon: <DomainAddIcon />,
-        route: "add-shelter",
+        route: "add-Admin",
       },
       {
-        text: "Show All Shelters",
+        text: "Show All Admins",
         icon: <HomeWorkIcon />,
-        route: "show-all-shelters",
+        route: "show-all-Admins",
       },
       {
         text: "Show All Users",
@@ -34,29 +33,36 @@ const sections = [
 const AdminLayout = () => {
   const navigate = useNavigate();
 
-  // Success function: navigate based on user role
-  const onSuccess = (user) => {
-      navigateBasedOnRole(user, navigate);
-    
-    console.log("Admin successfully fetched:", user);
-    // Additional admin-specific operations if needed
-  };
+  // Memoize success and error callbacks
+  const onSuccess = useCallback(
+    (user) => {
+      if (user.role !== "admin") {
+        alert("Unauthorized access. Please log in.");
+        navigate("/login");
+      }
+      console.log("User successfully fetched:", user);
+    },
+    [navigate]
+  );
 
-  // Error function: handle errors (e.g., show an alert and navigate to login)
-  const onError = (error) => {
-    console.error("Error fetching admin:", error);
-    navigate("/login");
-  };
+  const onError = useCallback(
+    (error) => {
+      console.error("Error occurred:", error);
+      alert("An error occurred. Redirecting to login.");
+      navigate("/login");
+    },
+    [navigate]
+  );
 
-  // Fetch user data from the useUser hook
-  const { user: adminData, loading } = useUser(onSuccess, onError);
+  // Fetch user with the custom hook
+  const { user: admin, loading } = useUser(onSuccess, onError);
 
   useEffect(() => {
-    if (adminData) {
-      // If user data is available, navigate based on the user's role
-      navigateBasedOnRole(adminData, navigate);
+    if (admin) {
+      console.log("Fetched admin user:", admin);
+      // Additional logic for admin user can go here if needed
     }
-  }, [adminData, navigate]); // Only run when adminData changes
+  }, [admin]);
 
   if (loading) {
     // Show loading spinner while fetching user data
@@ -74,7 +80,7 @@ const AdminLayout = () => {
 
   return (
     <MiniDrawer
-      title={`Hello ${adminData?.username || ""}`}
+      title={`Hello ${admin?.username || ""}`}
       sections={sections}
     />
   );

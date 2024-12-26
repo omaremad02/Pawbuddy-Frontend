@@ -1,11 +1,12 @@
 import DomainAddIcon from "@mui/icons-material/DomainAdd";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
-import PetsIcon from '@mui/icons-material/Pets';
+import PetsIcon from "@mui/icons-material/Pets";
 import { Box, CircularProgress } from "@mui/material";
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import useUser from "../../../../../utils/hooks/fetchUserHook";
 import MiniDrawer from "../../../../common/MiniDrawer";
+
 const sections = [
   {
     label: "Shelter Staffs",
@@ -25,7 +26,6 @@ const sections = [
         icon: <PetsIcon />,
         route: "add-pet",
       },
-     
     ],
   },
 ];
@@ -33,22 +33,36 @@ const sections = [
 const ShelterStaffLayout = () => {
   const navigate = useNavigate();
 
-  const onSuccess = (user) => {
-    if (user.role !== "ShelterManager" && user.role !== "ShelterStaff") {
-      alert("Unauthorized access. Please log in.");
+  // Memoize success and error callbacks
+  const onSuccess = useCallback(
+    (user) => {
+      if (user.role !== "ShelterStaff") {
+        alert("Unauthorized access. Please log in.");
+        navigate("/login");
+      }
+      console.log("User successfully fetched:", user);
+    },
+    [navigate]
+  );
+
+  const onError = useCallback(
+    (error) => {
+      console.error("Error occurred:", error);
+      alert("An error occurred. Redirecting to login.");
       navigate("/login");
-    }
-    console.log("User successfully fetched:", user);
-    // Additional operations based on user role
-  };
+    },
+    [navigate]
+  );
 
-  const onError = (error) => {
-    console.error("Error occurred:", error);
-    navigate("/login");
-
-  };
-
+  // Call the hook at the top level
   const { user: shelter, loading } = useUser(onSuccess, onError);
+
+  useEffect(() => {
+    if (shelter) {
+      console.log("Fetched shelter user:", shelter);
+      // Additional logic for shelter user can go here if needed
+    }
+  }, [shelter]);
 
   if (loading) {
     return (
@@ -62,8 +76,8 @@ const ShelterStaffLayout = () => {
       </Box>
     );
   }
-  
-console.log(shelter);
+
+  console.log(shelter);
 
   return (
     <MiniDrawer
