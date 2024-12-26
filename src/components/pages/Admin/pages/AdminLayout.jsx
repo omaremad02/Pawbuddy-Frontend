@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import { CircularProgress, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import MiniDrawer from "../../../common/MiniDrawer";
 import DomainAddIcon from "@mui/icons-material/DomainAdd";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
-import endpoints from "../../../../utils/apiEndpoints";
-import GroupIcon from '@mui/icons-material/Group';
+import GroupIcon from "@mui/icons-material/Group";
+import useUser from "../../../../utils/hooks/fetchUserHook";
+import { navigateBasedOnRole } from "../../../../utils/navigation/navigateBasedOnRole";
+
 const sections = [
   {
     label: "Section 1",
@@ -20,7 +22,6 @@ const sections = [
         icon: <HomeWorkIcon />,
         route: "show-all-shelters",
       },
-
       {
         text: "Show All Users",
         icon: <GroupIcon />,
@@ -32,49 +33,33 @@ const sections = [
 
 const AdminLayout = () => {
   const navigate = useNavigate();
-  const [adminData, setAdminData] = useState(null);
-  const [loading, setLoading] = useState(true); // State for loading indicator
+
+  // Success function: navigate based on user role
+  const onSuccess = (user) => {
+      navigateBasedOnRole(user, navigate);
+    
+    console.log("Admin successfully fetched:", user);
+    // Additional admin-specific operations if needed
+  };
+
+  // Error function: handle errors (e.g., show an alert and navigate to login)
+  const onError = (error) => {
+    console.error("Error fetching admin:", error);
+    navigate("/login");
+  };
+
+  // Fetch user data from the useUser hook
+  const { user: adminData, loading } = useUser(onSuccess, onError);
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        alert("Token is missing. Please log in.");
-        navigate("/login");
-        return;
-      }
-
-      try {
-        const response = await fetch(endpoints.getUserWithToken, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await response.json();
-
-        if (response.ok && data.user.role === "Admin") {
-          setAdminData(data.user);
-        } else {
-          alert("Invalid token or unauthorized access. Please log in again.");
-          navigate("/login");
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-        navigate("/login");
-      } finally {
-        setLoading(false); // Stop loading once data is fetched
-      }
-    };
-
-    checkAdmin();
-  }, [navigate]);
+    if (adminData) {
+      // If user data is available, navigate based on the user's role
+      navigateBasedOnRole(adminData, navigate);
+    }
+  }, [adminData, navigate]); // Only run when adminData changes
 
   if (loading) {
-    // Show loading indicator while fetching data
+    // Show loading spinner while fetching user data
     return (
       <Box
         display="flex"

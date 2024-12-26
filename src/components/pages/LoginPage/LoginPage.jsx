@@ -1,29 +1,26 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import VideoBackground from "../../common/Videobackground";
 import Field from "../../common/Field";
 import Button from "../../common/Button";
 import Card from "../../common/Card";
-import Title from "../../common/Title";
-import RoleSelector from "./RoleSelector";
 import PageTransition from "../../common/PageTransition";
+import Swal from "sweetalert2";
+import Spinner from "../../common/Spinner";
 import styles from "./LoginPage.module.css";
 import endpoints from "../../../utils/apiEndpoints";
-import Spinner from "../../common/Spinner";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import useUser from "../../../utils/hooks/fetchUserHook";
 
 const LoginPage = () => {
-  const navigate = useNavigate();
+  const { setUser } = useUser(); // Use the user hook to set user data
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Validation
     if (!email || !password) {
       Swal.fire({
         icon: "error",
@@ -37,37 +34,23 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(endpoints.LOGIN, { email, password });
-
-      // Assuming the response contains a token and role
-      const { token } = response.data;
-      const { user } = response.data;
-
+      const { token, user } = response.data;
 
       // Store token in localStorage
       localStorage.setItem("token", token);
 
-      // Navigate based on the user's role
-      if (user.role === "Admin") {
-        navigate("/Admin");
-      } else if (user.role === "ShelterStaff"|| user.role === "ShelterManager") {
-        
-        navigate("/shelter");
-      }
+      // Set user using the hook
+      setUser(user);
+
+      // Use the custom hook to navigate based on the user's role
+
     } catch (err) {
-      // Check if error response exists and display the message
-      if (err.response && err.response.data && err.response.data.message) {
-        Swal.fire({
-          icon: "error",
-          title: "Login Failed",
-          text: err.response.data.message,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops!",
-          text: "Invalid credentials or server error.",
-        });
-      }
+      const errorMessage = err.response?.data?.message || "Invalid credentials or server error.";
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -96,7 +79,6 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-         
             {isLoading ? (
               <Spinner />
             ) : (
@@ -110,7 +92,7 @@ const LoginPage = () => {
           </form>
           <p className={styles.footer}>
             Not with us?{" "}
-            <span className={styles.link} onClick={() => navigate("/apply")}>
+            <span className={styles.link} onClick={() => Navigate("/apply")}>
               Apply!
             </span>
           </p>

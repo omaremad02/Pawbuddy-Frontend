@@ -1,29 +1,48 @@
-// src/components/pages/HomePage/HomePage.jsx
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import VideoBackground from "../../common/Videobackground";
-import Title from "../../common/Title";
 import PageTransition from "../../common/PageTransition";
-import styles from "./HomePage.module.css";
 import Header from "../../Header/Header";
+import styles from "./HomePage.module.css";
+import useUser from "../../../utils/hooks/fetchUserHook";
+import { Box, CircularProgress } from "@mui/material";
+import { navigateBasedOnRole } from "../../../utils/navigation/navigateBasedOnRole";
 
 const HomePage = () => {
-  // eslint-disable-next-line
-  const [currentPage, setCurrentPage] = useState(0);
+  const navigate = useNavigate();
+  const { user, loading } = useUser(); // Fetch user data
+
+  useEffect(() => {
+    if (user) {
+      // If user data is available, navigate based on the user's role
+      navigateBasedOnRole(user, navigate);
+    }
+  }, [user, navigate]); // Only run when user changes
+
+  if (loading) {
+    // Show loading spinner while fetching user data
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
-    <PageTransition currentPage={currentPage}>
-      <div className={styles.container}>
-        <VideoBackground src="/video.mp4" />
-        <div className={styles.content}>
+    <div className={styles.container}>
+      <VideoBackground src="/video.mp4" />
+      <div className={styles.content}>
         <Header />
-          {/* <Title text="Pawbuddy" level={1} /> */}
-          <Link to="/login" className={styles.link}>
-            Log In
-          </Link>
-        </div>
+        <Link to="/login" className={styles.link}>
+          Log In
+        </Link>
       </div>
-    </PageTransition>
+    </div>
   );
 };
 

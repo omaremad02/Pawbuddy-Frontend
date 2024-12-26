@@ -1,66 +1,75 @@
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { Routes, Route } from "react-router-dom";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
 
-import Spinner from "./components/common/Spinner"; // Import Spinner component
-
+import { CssBaseline } from "@mui/material";
+import AddShelterPage from "./components/pages/Admin/pages/AddShelterPage";
+import AdminLayout from "./components/pages/Admin/pages/AdminLayout";
+import ShowAllShelters from "./components/pages/Admin/pages/showAllShelters";
+import ShowAllUsers from "./components/pages/Admin/pages/showAllUsers";
+import { UpdateShelter } from "./components/pages/Admin/pages/UpdateShelter";
+import UpdateUser from "./components/pages/Admin/pages/UpdateUser";
 import ApplyPage from "./components/pages/ApplyPage/ApplyPage";
 import HomePage from "./components/pages/HomePage/HomePage";
 import LoginPage from "./components/pages/LoginPage/LoginPage";
-import AdminLayout from "./components/pages/Admin/pages/AdminLayout";
-import useCheckUserRole from "./utils/useCheckUserRole";
-import Shelter from "./components/pages/ShelterDashboard/ShelterLayout";
-import { AddStaff } from "./components/pages/ShelterDashboard/staff/AddStaff";
-import ShowAllPetsPage from "./components/pages/ShelterDashboard/pets/ShowAllPetsPage";
+import ShelterLayout from "./components/pages/ShelterDashboard/layouts/shelterStaffLayout/ShelterStaffLayout";
 import AddPetPage from "./components/pages/ShelterDashboard/pets/AddPetPage";
 import EditPetPage from "./components/pages/ShelterDashboard/pets/EditPetPage";
-import AddShelterPage from "./components/pages/Admin/pages/AddShelterPage";
-import ShelterTable from "./components/pages/Admin/pages/showAllShelters";
-import ShowAllShelters from "./components/pages/Admin/pages/showAllShelters";
-import { CssBaseline } from "@mui/material";
-import { UpdateShelter } from "./components/pages/Admin/pages/UpdateShelter";
-import ShowAllUsers from "./components/pages/Admin/pages/showAllUsers";
-import UpdateUser from "./components/pages/Admin/pages/UpdateUser";
-import ShelterLayout from "./components/pages/ShelterDashboard/ShelterLayout";
+import ShowAllPetsPage from "./components/pages/ShelterDashboard/pets/ShowAllPetsPage";
+import { AddStaff } from "./components/pages/ShelterDashboard/staff/AddStaff";
+import ShowAllShelterStaff from "./components/pages/ShelterDashboard/staff/showAllShelterStaff";
+import ShelterManagerLayout from "./components/pages/ShelterDashboard/layouts/shelterManagerLayout/ShelterManagerLayout";
+import ShelterStaffLayout from "./components/pages/ShelterDashboard/layouts/shelterStaffLayout/ShelterStaffLayout";
 
 const App = () => {
-
- 
   return (
-<>
-<CssBaseline/>
+    <>
+      <CssBaseline />
 
-    <AnimatePresence mode="wait" initial={false}>
-      <Routes >
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/apply" element={<ApplyPage />} />
-        <Route path="/Admin" element={<AdminLayout />} />
+      <AnimatePresence mode="wait" initial={false}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/apply" element={<ApplyPage />} />
+          <Route path="/Admin" element={<AdminLayout />} />
 
-        <Route path="/Admin" element={<AdminLayout />}>
-          <Route index element={<ShowAllShelters />} /> {/* Default */}
-          <Route path="add-shelter" element={<AddShelterPage />} />
-          <Route path="show-all-shelters" element={<ShowAllShelters />} />
-          <Route path="update-shelter/:shelterId" element={<UpdateShelter />} />
-         {/* // users */}
-          <Route path="show-all-users" element={<ShowAllUsers />} />
-          <Route path="update-user/:userId" element={<UpdateUser />} />
+          <Route path="/Admin" element={<AdminLayout />}>
+            <Route index element={<ShowAllShelters />} /> {/* Default */}
+            <Route path="add-shelter" element={<AddShelterPage />} />
+            <Route path="show-all-shelters" element={<ShowAllShelters />} />
+            <Route
+              path="update-shelter/:shelterId"
+              element={<UpdateShelter />}
+            />
+            {/* // users */}
+            <Route path="show-all-users" element={<ShowAllUsers />} />
+            <Route path="update-user/:userId" element={<UpdateUser />} />
+          </Route>
 
-        </Route>
+          <Route path="/shelterManager" element={<ShelterManagerLayout />}>
+            <Route index element={<ShowAllPetsPage />} /> {/* Default */}
+            <Route path="show-all-pets" element={<ShowAllPetsPage />} />
+            <Route path="add-pet" element={<AddPetPage />} />
+            <Route path="edit-pet/:petId" element={<EditPetPage />} />
+            <Route path="add-staff" element={<AddStaff />} />
+            {/* // shelters staff */}
+            <Route
+              path="show-all-shelter-staff"
+              element={<ShowAllShelterStaff />}
+            />
+          </Route>
 
-      <Route path="/shelter" element={<ShelterLayout />}>
-          <Route index element={<ShowAllPetsPage />} /> {/* Default */}
-          <Route path="show-all-pets" element={<ShowAllPetsPage />} />
-          <Route path="add-pet" element={<AddPetPage />} />
-          <Route path="edit-pet/:petId" element={<EditPetPage />} />
 
-          <Route path="add-staff" element={<AddStaff />} />
-        </Route>
-      </Routes>
-
-
-    </AnimatePresence>
+          <Route path="/shelterStaff" element={<ShelterStaffLayout />}>
+            <Route index element={<ShowAllPetsPage />} /> {/* Default */}
+            <Route path="show-all-pets" element={<ShowAllPetsPage />} />
+            <Route path="add-pet" element={<AddPetPage />} />
+            <Route path="edit-pet/:petId" element={<EditPetPage />} />
+            <Route path="add-staff" element={<AddStaff />} />
+        
+          </Route>
+        </Routes>
+      </AnimatePresence>
     </>
   );
 };
