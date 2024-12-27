@@ -39,9 +39,9 @@ DELETE_USER:(id)=> `${API_BASE_URL}/api/user/delete-user/${id}`,  // Endpoint to
 
     // pets 
   ADD_PET: `${API_BASE_URL}/api/pet/add_Pet`,  // Endpoint to add a pet
-  EDIT_PET:  `${API_BASE_URL}/api/pet/update_pet/`, // Endpoint to edit a pet, dynamically accept pet ID
+  EDIT_PET: (id)=>  `${API_BASE_URL}/api/pet/update_pet/${id}`, // Endpoint to edit a pet, dynamically accept pet ID
   GET_PETS: `${API_BASE_URL}/api/pet/get_shelter_pets`, // Endpoint to get all pets
-  DELETE_PET:`${API_BASE_URL}/api/pet/delete_pet`, // Endpoint to delete a pet, dynamically accept pet ID
+  DELETE_PET:(id)=> `${API_BASE_URL}/api/pet/delete_pet/${id}`, // Endpoint to delete a pet, dynamically accept pet ID
   // Add other endpoints as needed
 };
 

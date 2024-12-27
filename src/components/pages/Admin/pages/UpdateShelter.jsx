@@ -43,7 +43,7 @@ import {
           const response = await axios.get(
             `${endpoints.GET_ALL_SHELTERS}?shelterId=${shelterId}`,
             {
-              headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+              headers: endpoints.getAuthHeader(),
             }
           );
           console.log(response);

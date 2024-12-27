@@ -1,8 +1,10 @@
-import { Box, CircularProgress, FormControl, InputLabel, MenuItem, Button as MuiButton, Select, TextField } from "@mui/material";
-import axios from "axios"; // Import Axios
+import { Box, CircularProgress, FormControl, InputLabel, MenuItem, Button as MuiButton, Select, TextField, Input, IconButton } from "@mui/material";
+import axios from "axios";
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 import endpoints from "../../../../utils/apiEndpoints";
+import { AddPhotoAlternate, RemoveCircleOutline } from "@mui/icons-material"; // For the upload button icon
+import styles from "./css/AddPetPage.module.css";
 
 const AddPetPage = ({ petToEdit }) => {
   const [AddPet, setAddPet] = useState(
@@ -17,45 +19,47 @@ const AddPetPage = ({ petToEdit }) => {
       gender: "Male",
       dob: "",
       houseTrained: "Street",
+      images: [] // Added images field to store uploaded images
     }
   );
 
   const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false); // Loading state
-  const [submitted, setSubmitted] = useState(false); // Track whether the form has been submitted
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleFieldChange = (field, value) => {
     setAddPet((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setAddPet((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files], // Append the new images to the existing array
+    }));
+  };
+
   const validateFields = () => {
     const newErrors = {};
-
     if (!AddPet.name.trim()) {
       newErrors.name = "Name is required";
     }
-
     if (!AddPet.breed.trim()) {
       newErrors.breed = "Breed is required";
     }
-
     if (!AddPet.dob) {
       newErrors.dob = "Date of Birth is required";
     }
-
     if (!AddPet.gender) {
       newErrors.gender = "Gender is required";
     }
-
     if (!AddPet.type) {
       newErrors.type = "Type is required";
     }
-
     if (!AddPet.houseTrained) {
       newErrors.houseTrained = "House trained status is required";
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -63,22 +67,31 @@ const AddPetPage = ({ petToEdit }) => {
   const savePet = async (petData) => {
     if (!validateFields()) return;
 
-    setIsLoading(true); // Show loading indicator
-    setSubmitted(true); // Mark as submitted
+    setIsLoading(true);
+    setSubmitted(true);
     try {
-      const response = await axios.post(endpoints.ADD_PET, {
-        type: petData.type,
-        gender: petData.gender,
-        dob: new Date(petData.dob).toISOString(),
-        houseTrained: petData.houseTrained,
-        name: petData.name,
-        breed: petData.breed,
-      }, {
-        headers: endpoints.getAuthHeader(),
+      const formData = new FormData();
+      // Append regular fields
+      formData.append("name", petData.name);
+      formData.append("type", petData.type);
+      formData.append("gender", petData.gender);
+      formData.append("dob", new Date(petData.dob).toISOString());
+      formData.append("houseTrained", petData.houseTrained);
+      formData.append("breed", petData.breed);
+
+      // Append images to form data
+      petData.images.forEach((image) => {
+        formData.append("images", image);
+      });
+
+      const response = await axios.post(endpoints.ADD_PET, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          ...endpoints.getAuthHeader(),
+        },
       });
 
       console.log("Pet saved successfully:", response.data);
-      // Using SweetAlert for success
       Swal.fire({
         title: "Success!",
         text: "Pet saved successfully!",
@@ -87,7 +100,6 @@ const AddPetPage = ({ petToEdit }) => {
       });
     } catch (error) {
       console.error("Error saving pet:", error);
-      // Using SweetAlert for error
       Swal.fire({
         title: "Error!",
         text: "An error occurred while saving the pet.",
@@ -95,15 +107,14 @@ const AddPetPage = ({ petToEdit }) => {
         confirmButtonText: "OK",
       });
     } finally {
-      setIsLoading(false); // Hide loading indicator
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="container">
-      <div className="scrollableContainer">
-        <div className="editContainer">
-          {/* Add Pet Title */}
+    <div className={styles.container}>
+      <div className={styles.scrollableContainer}>
+        <div>
           <h2 style={{ textAlign: 'center', color: 'black', fontSize: '36px', fontWeight: 'bold' }}>Add Pet</h2>
 
           {/* Name Field */}
@@ -124,8 +135,7 @@ const AddPetPage = ({ petToEdit }) => {
             <FormControl fullWidth error={submitted && !!errors.type}>
               <InputLabel>Type</InputLabel>
               <Select
-                            sx={{marginTop:1}}
-
+                sx={{ marginTop: 1 }}
                 value={AddPet.type}
                 onChange={(e) => handleFieldChange("type", e.target.value)}
                 disabled={isLoading}
@@ -155,7 +165,7 @@ const AddPetPage = ({ petToEdit }) => {
             <FormControl fullWidth error={submitted && !!errors.gender}>
               <InputLabel>Gender</InputLabel>
               <Select
-              sx={{marginTop:1}}
+                sx={{ marginTop: 1 }}
                 value={AddPet.gender}
                 onChange={(e) => handleFieldChange("gender", e.target.value)}
                 disabled={isLoading}
@@ -189,8 +199,7 @@ const AddPetPage = ({ petToEdit }) => {
             <FormControl fullWidth error={submitted && !!errors.houseTrained}>
               <InputLabel>House Trained</InputLabel>
               <Select
-                            sx={{marginTop:1}}
-
+                sx={{ marginTop: 1 }}
                 value={AddPet.houseTrained}
                 onChange={(e) => handleFieldChange("houseTrained", e.target.value)}
                 disabled={isLoading}
@@ -202,11 +211,66 @@ const AddPetPage = ({ petToEdit }) => {
             </FormControl>
           </Box>
 
-        
+          {/* Image Upload */}
+          <Box mb={2}>
+            <Input
+              type="file"
+              multiple
+              onChange={handleImageChange}
+              inputProps={{ accept: "image/jpeg, image/png" }} // Accept only jpg and png files
+              disabled={isLoading}
+            />
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, marginTop: 2 }}>
+              {AddPet.images.map((image, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    position: 'relative', // Positioning the remove button over the image
+                    width: 200,
+                    height: 200,
+                    overflow: 'hidden', // Ensures image doesn't overflow the box
+                  }}
+                >
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt={`Pet Image ${index + 1}`}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover', // Ensure image covers the container
+                    }}
+                  />
+                  <IconButton
+                    onClick={() => {
+                      setAddPet((prev) => ({
+                        ...prev,
+                        images: prev.images.filter((_, i) => i !== index), // Remove image at the current index
+                      }));
+                    }}
+                    sx={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                      backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                      borderRadius: '50%',
+                      padding: '4px',
+                      color: 'red',
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 1)',
+                      },
+                    }}
+                  >
+                    <RemoveCircleOutline />
+                  </IconButton>
+                </Box>
+              ))}
+            </Box>
+          </Box>
 
           {/* Save Button */}
           {!isLoading && (
             <MuiButton
+              sx={{ marginTop: 10 }}
               variant="contained"
               color="primary"
               onClick={() => savePet(AddPet)}
@@ -218,9 +282,11 @@ const AddPetPage = ({ petToEdit }) => {
           )}
 
           {/* Loading Indicator */}
-          {isLoading &&   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
-    <CircularProgress />
-  </div>}
+          {isLoading && (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
+              <CircularProgress />
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // Import useParams from react-router-dom
+import { useParams } from "react-router-dom";
 import styles from "./css/AddPetPage.module.css";
 import Field from "../../../common/Field";
 import Button from "../../../common/Button";
@@ -11,9 +11,11 @@ import axios from "axios";
 import endpoints from "../../../../utils/apiEndpoints";
 import Swal from "sweetalert2";
 import ResponseError from "../../../common/ResponseError";
+import { IconButton, Box } from "@mui/material";
+import { AddPhotoAlternate, RemoveCircleOutline } from "@mui/icons-material";
 
 const EditPetPage = () => {
-  const { petId } = useParams(); // Get petId from the URL
+  const { petId } = useParams();
   const [petData, setPetData] = useState({
     petId: "",
     name: "",
@@ -26,6 +28,7 @@ const EditPetPage = () => {
     gender: "Male",
     dob: "",
     houseTrained: "Street",
+    images: [],
   });
 
   const [errors, setErrors] = useState({});
@@ -36,28 +39,18 @@ const EditPetPage = () => {
   useEffect(() => {
     const fetchPetDetails = async () => {
       try {
-        const response = await axios.post(`${endpoints.GET_PETS}`, {
-          shelterId: "60d21b4667d0d8992e610c86", // Replace with your shelter ID
-          petId: petId,
-        });
+        const response = await axios.get(
+          `${endpoints.GET_PETS}?petId=${petId}`,
+          { headers: endpoints.getAuthHeader() }
+        );
 
         const fetchedData = response.data.pets;
-
         if (fetchedData && fetchedData.length > 0) {
           const pet = fetchedData[0];
           setPetData({
-            petId: pet.petId,
-            name: pet.name || "",
-            type: pet.type || "Dog",
-            breed: pet.breed || "",
-            adoptionstatus: pet.adoptionstatus || "",
-            vaccinationstatus: pet.vaccinationstatus || "",
-            size: pet.size || "",
-            temperament: pet.temperament || "",
-            age: pet.dob || "",
-            gender: pet.gender || "Male",
+            ...pet,
             dob: pet.dob ? new Date(pet.dob).toISOString().split("T")[0] : "",
-            houseTrained: pet.houseTrained || "Street",
+            images: pet.images || [],
           });
           setPetNotFound(false);
         } else {
@@ -65,21 +58,14 @@ const EditPetPage = () => {
         }
       } catch (error) {
         console.error("Error fetching pet details:", error);
-        Swal.fire({
-          title: "Error!",
-          text: "An error occurred while fetching pet details.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+        Swal.fire("Error!", "An error occurred while fetching pet details.", "error");
         setPetNotFound(true);
       } finally {
         setIsFetching(false);
       }
     };
 
-    if (petId) {
-      fetchPetDetails();
-    }
+    if (petId) fetchPetDetails();
   }, [petId]);
 
   const handleFieldChange = (field, value) => {
@@ -87,17 +73,26 @@ const EditPetPage = () => {
     setErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setPetData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
+    }));
+  };
+
+  const removeImage = (index) => {
+    setPetData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  };
+
   const validateFields = () => {
     const newErrors = {};
-    if (!petData.name.trim()) {
-      newErrors.name = "Name is required";
-    }
-    if (!petData.breed.trim()) {
-      newErrors.breed = "Breed is required";
-    }
-    if (!petData.dob) {
-      newErrors.dob = "Date of Birth is required";
-    }
+    if (!petData.name.trim()) newErrors.name = "Name is required";
+    if (!petData.breed.trim()) newErrors.breed = "Breed is required";
+    if (!petData.dob) newErrors.dob = "Date of Birth is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -107,39 +102,35 @@ const EditPetPage = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(`${endpoints.EDIT_PET}`, {
-        shelterId: "60d21b4667d0d8992e610c86",
-        ...petData,
+      const formData = new FormData();
+      Object.entries(petData).forEach(([key, value]) => {
+        if (key === "images") {
+          value.forEach((image) => {
+            formData.append("images", image);
+          });
+        } else {
+          formData.append(key, value);
+        }
       });
-      console.log("Pet updated successfully:", response.data);
-      Swal.fire({
-        title: "Success!",
-        text: "Pet updated successfully!",
-        icon: "success",
-        confirmButtonText: "OK",
+
+      const response = await axios.put(endpoints.EDIT_PET(petId), formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          ...endpoints.getAuthHeader(),
+        },
       });
+
+      Swal.fire("Success!", "Pet updated successfully!", "success");
     } catch (error) {
       console.error("Error updating pet:", error);
-      Swal.fire({
-        title: "Error!",
-        text: "An error occurred while updating the pet.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+      Swal.fire("Error!", "An error occurred while updating the pet.", "error");
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (isFetching) {
-    return <Spinner />;
-  }
-
-  if (petNotFound) {
-    return (
-    <ResponseError></ResponseError>
-    );
-  }
+  if (isFetching) return <Spinner />;
+  if (petNotFound) return <ResponseError />;
 
   return (
     <div className={styles.container}>
@@ -173,14 +164,6 @@ const EditPetPage = () => {
           />
           <ErrorText message={errors.breed} />
 
-          <Dropdown
-            label="Gender"
-            value={petData.gender}
-            options={[{ value: "Male", label: "Male" }, { value: "Female", label: "Female" }]}
-            onChange={(value) => handleFieldChange("gender", value)}
-            disabled={isLoading}
-          />
-
           <Field
             label="Date of Birth"
             type="date"
@@ -190,22 +173,41 @@ const EditPetPage = () => {
           />
           <ErrorText message={errors.dob} />
 
-          <Dropdown
-            label="House Trained"
-            value={petData.houseTrained}
-            options={[{ value: "Home", label: "Home" }, { value: "Street", label: "Street" }]}
-            onChange={(value) => handleFieldChange("houseTrained", value)}
+          {/* Image Upload Section */}
+          <Box mb={2}>
+            <label>Upload Images</label>
+            <input
+              type="file"
+              multiple
+              onChange={handleImageChange}
+              disabled={isLoading}
+              accept="image/*"
+            />
+          </Box>
+
+          {/* Display Uploaded Images */}
+          <Box>
+            {petData.images.map((image, index) => (
+              <Box key={index} display="flex" alignItems="center" mb={1}>
+                <img
+                  src={typeof image === "string" ? image : URL.createObjectURL(image)}
+                  alt={`Pet ${index}`}
+                  style={{ width: 100, height: 100, objectFit: "cover", marginRight: 8 }}
+                />
+                <IconButton onClick={() => removeImage(index)}>
+                  <RemoveCircleOutline />
+                </IconButton>
+              </Box>
+            ))}
+          </Box>
+
+          <Button
+            label="Update"
+            onClick={updatePet}
+            variant="primary"
+            style={{ width: "100%", padding: 20 }}
             disabled={isLoading}
           />
-
-          {!isLoading && (
-            <Button
-              label="Update"
-              onClick={updatePet}
-              variant="primary"
-              style={{ width: "100%", padding: 20 }}
-            />
-          )}
           {isLoading && <Spinner />}
         </div>
       </div>
