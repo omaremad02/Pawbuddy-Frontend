@@ -23,6 +23,12 @@ const sections = [
         icon: <HomeWorkIcon />,
         route: "add-shelter-staff",
       },
+
+      {
+        text: "Get All Adoption Requests",
+        icon: <HomeWorkIcon />,
+        route: "get-all-adoption-requests",
+      },
     ],
   },
 ];
