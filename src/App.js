@@ -20,6 +20,7 @@ import AddStaffPage, { AddStaff } from "./components/pages/ShelterDashboard/staf
 import ShowAllShelterStaff from "./components/pages/ShelterDashboard/staff/showAllShelterStaff";
 import ShelterManagerLayout from "./components/pages/ShelterDashboard/layouts/shelterManagerLayout/ShelterManagerLayout";
 import ShelterStaffLayout from "./components/pages/ShelterDashboard/layouts/shelterStaffLayout/ShelterStaffLayout";
+import UpdateShelterStaffPage from "./components/pages/ShelterDashboard/staff/updateStaffPage";
 
 const App = () => {
   return (
@@ -57,6 +58,11 @@ const App = () => {
               path="show-all-shelter-staff"
               element={<ShowAllShelterStaff />}
             />
+ <Route
+              path="update-shelter-staff/:shelterStaffId"
+              element={<UpdateShelterStaffPage />}
+            />
+            
           </Route>
 
 

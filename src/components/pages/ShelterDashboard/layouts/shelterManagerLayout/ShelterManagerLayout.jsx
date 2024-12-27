@@ -11,7 +11,6 @@ const sections = [
   {
     label: "Shelter Staffs",
     items: [
-      { text: "Add Shelter Staff", route: "add-staff", icon: <DomainAddIcon /> },
       { text: "Show All Pets", icon: <HomeWorkIcon />, route: "show-all-pets" },
       { text: "Add Pet", icon: <PetsIcon />, route: "add-pet" },
       {

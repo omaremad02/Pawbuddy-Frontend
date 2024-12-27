@@ -51,11 +51,19 @@ import {
         confirmButtonText: "Yes, delete it!",
         cancelButtonText: "Cancel",
       }).then(async (result) => {
+
         if (result.isConfirmed) {
+
+
           try {
-            const response = await axios.post(`${endpoints.DELETE_STAFF}`, {
-              staffId: id,
-            });
+
+            const response = await axios.delete(endpoints.DELETE_STAFF(id),
+            {
+              headers: endpoints.getAuthHeader(),
+    
+            }
+          );
+            
             if (response.status === 200) {
               Swal.fire("Deleted!", `${staffName} has been deleted.`, "success");
               setStaffList(staffList.filter((staff) => staff._id !== id));
@@ -69,7 +77,7 @@ import {
     };
   
     const handleEdit = (id) => {
-      navigate(`/shelter/edit-staff/${id}`);
+      navigate(`/shelterManager/update-shelter-staff/${id}`);
     };
   
     const handleChangePage = (event, newPage) => {
