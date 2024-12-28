@@ -80,7 +80,7 @@ const ShowAllPetsPage = () => {
   };
 
   const handleDelete = (id) => {
-    const petName = pets.find((pet) => pet.petId === id)?.name || "this pet";
+    const petName = pets.find((pet) => pet.id === id)?.name || "this pet";
 
     Swal.fire({
       title: "Are you sure?",

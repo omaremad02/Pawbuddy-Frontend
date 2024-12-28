@@ -26,6 +26,8 @@ const ShowAdoptionRequestsPage = () => {
       const response = await axios.get(endpoints.GET_ALL_ADOPTION_REQUESTS, {
         headers: endpoints.getAuthHeader(),
       });
+      console.log(response.data.adoptionRequests);
+      
       setAdoptionRequests(response.data.adoptionRequests);
     } catch (error) {
       console.error("Error fetching adoption requests:", error);
@@ -122,13 +124,14 @@ status:"Approved"
             {adoptionRequests
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((request) => (
+                
                 <TableRow key={request._id} hover>
                   <TableCell>{request.user.username}</TableCell>
                   <TableCell>{request.pet.name}</TableCell>
                   <TableCell>{request.status}</TableCell>
                   <TableCell>{new Date(request.createdAt).toLocaleString()}</TableCell>
                   <TableCell>
-  {request.status === "Pending" ? (
+  {request.status === "No Action" ? (
     <>
       <Button
         onClick={() => handleAccept(request._id)}
