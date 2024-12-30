@@ -82,7 +82,7 @@ const ShowAllShelters = () => {
 
   return (
     <>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5"  gutterBottom>
         Shelters List
       </Typography>
       <TableContainer component={Paper}>

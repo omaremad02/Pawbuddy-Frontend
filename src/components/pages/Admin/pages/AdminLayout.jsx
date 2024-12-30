@@ -12,14 +12,14 @@ const sections = [
     label: "Section 1",
     items: [
       {
-        text: "Add Admin",
+        text: "add-shelter",
         icon: <DomainAddIcon />,
-        route: "add-Admin",
+        route: "add-shelter",
       },
       {
-        text: "Show All Admins",
+        text: "Show all Shelters",
         icon: <HomeWorkIcon />,
-        route: "show-all-Admins",
+        route: "show-all-shelters",
       },
       {
         text: "Show All Users",
@@ -36,7 +36,7 @@ const AdminLayout = () => {
   // Memoize success and error callbacks
   const onSuccess = useCallback(
     (user) => {
-      if (user.role !== "admin") {
+      if (user.role !== "Admin") {
         alert("Unauthorized access. Please log in.");
         navigate("/login");
       }

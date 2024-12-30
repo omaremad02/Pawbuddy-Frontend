@@ -1,5 +1,9 @@
+import NoImageIcon from "@mui/icons-material/NoPhotography"; // Import the No Image icon
 import {
+  Box,
   Button,
+  IconButton,
+  Modal,
   Paper,
   Table,
   TableBody,
@@ -9,16 +13,12 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  IconButton,
-  Modal,
-  Box,
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import endpoints from "../../../../utils/apiEndpoints";
-import NoImageIcon from "@mui/icons-material/NoPhotography"; // Import the No Image icon
 import styles from "./css/AddPetPage.module.css";
 
 const ShowAllPetsPage = () => {
@@ -92,12 +92,18 @@ const ShowAllPetsPage = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await axios.post(`${endpoints.DELETE_PET}`, {
-            petId: id,
+          console.log(endpoints.DELETE_PET(id));
+          
+          const response = await  axios.post(endpoints.DELETE_PET(id), {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           });
+
+      
           if (response.status === 200) {
             Swal.fire("Deleted!", `${petName} has been deleted.`, "success");
-            setPets(pets.filter((pet) => pet.petId !== id));
+            setPets(pets.filter((pet) => pet._id !== id));
           }
         } catch (error) {
           console.error("Error deleting pet:", error);
@@ -197,7 +203,7 @@ const ShowAllPetsPage = () => {
                       Edit
                     </Button>
                     <Button
-                      onClick={() => handleDelete(pet.petId)}
+                      onClick={() => handleDelete(pet._id)}
                       variant="contained"
                       color="secondary"
                     >

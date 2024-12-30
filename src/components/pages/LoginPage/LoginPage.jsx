@@ -13,6 +13,7 @@ import endpoints from "../../../utils/apiEndpoints";
 import useUser from "../../../utils/hooks/fetchUserHook";
 
 const LoginPage = () => {
+  const navigate =useNavigate();
   const { setUser } = useUser(); // Use the user hook to set user data
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,11 +42,26 @@ const LoginPage = () => {
 
       // Set user using the hook
       setUser(user);
+  
+      // Navigate based on the user's role
+      if (user.role === "Admin") {
+        navigate("/Admin");
+      } else if(user.role === "ShelterManager") {
+        navigate("/shelterManager");
+      }else if(user.role === "ShelterStaff") {
+        navigate("/shelterStaff");
+      }
+
+
 
       // Use the custom hook to navigate based on the user's role
 
     } catch (err) {
       const errorMessage = err.response?.data?.message || "Invalid credentials or server error.";
+
+      console.log(err);
+      
+
       Swal.fire({
         icon: "error",
         title: "Login Failed",

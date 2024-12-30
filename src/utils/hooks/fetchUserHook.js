@@ -42,7 +42,7 @@ const useUser = (onSuccess, onError) => {
     fetchUser(); // Call the fetch function once
   }, []); // Empty dependency array ensures it runs only once
 
-  return { user, error, loading };
+  return { user, setUser, error, loading };
 };
 
 export default useUser;
