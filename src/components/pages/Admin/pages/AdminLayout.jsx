@@ -80,7 +80,7 @@ const AdminLayout = () => {
 
   return (
     <MiniDrawer
-      title={`Hello ${admin?.username || ""}`}
+      title={` ${admin?.username || ""}`}
       sections={sections}
     />
   );

@@ -122,15 +122,29 @@ const ShowAllUsers = () => {
                     <Button
                       onClick={() => handleEdit(user._id)}
                       variant="contained"
-                      color="primary"
-                      sx={{ mr: 1 }}
+                      sx={{
+                        marginRight: 1,
+                        backgroundColor: "#bbae9d", // Button background color
+                        color: "#ffffff", // Text color
+                        "&:hover": {
+                          backgroundColor: "#c0a676", // Hover state color
+                          
+                        },
+                      }}
                     >
                       Edit
                     </Button>
                     <Button
                       onClick={() => handleDelete(user._id)}
                       variant="contained"
-                      color="secondary"
+                      sx={{
+                        
+                        backgroundColor: "#947d34", // Button background color
+                        color: "#ffffff", // Text color
+                        "&:hover": {
+                          backgroundColor: "#c0a676", // Hover state color
+                        },
+                      }}
                     >
                       Delete
                     </Button>

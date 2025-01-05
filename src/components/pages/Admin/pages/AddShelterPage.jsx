@@ -165,18 +165,19 @@ const AddShelterPage = () => {
       borderRadius: '8px',
     }}
   >
-      <Container maxWidth="md">
-        <Typography variant="h4" gutterBottom>
+      <Container maxWidth="md"  >
+        <Typography variant="h4" gutterBottom >
           Add Shelter Manager
         </Typography>
-        <Stepper activeStep={activeStep} alternativeLabel>
+        <Stepper activeStep={activeStep} alternativeLabel
+        >
           {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
+            <Step key={label} >
+              <StepLabel >{label}</StepLabel>
             </Step>
           ))}
         </Stepper>
-        <Box mt={4}>
+        <Box mt={4} >
           {activeStep === 0 && (
             <Box>
               <TextField
@@ -216,7 +217,7 @@ const AddShelterPage = () => {
                 helperText={isNextClicked &&!formData.shelterData.address && "Address is required."}
               />
               {formData.shelterData.operationHours.map((hour, index) => (
-                <Box key={index} mb={2} display="flex" flexDirection="column">
+                <Box key={index} mb={2} display="flex" flexDirection="column" >
                   <TextField
                     select
                     label="Day"
@@ -265,14 +266,22 @@ const AddShelterPage = () => {
                   </Box>
                 </Box>
               ))}
-              <Button onClick={addOperationHour} variant="outlined">
+              <Button onClick={addOperationHour} 
+              sx={{
+                        backgroundColor: "#c0a676", // Button background color
+                        color: "#ffffff", // Text color
+                        "&:hover": {
+                          backgroundColor: "#bbae9d", // Hover state color
+                          
+                        },
+                      }}>
                 Add Operation Hour
               </Button>
             </Box>
           )}
 
           {activeStep === 1 && (
-            <Box>
+            <Box >
               <TextField
                 label="Username"
                 fullWidth
@@ -385,19 +394,41 @@ const AddShelterPage = () => {
 
         <Box mt={2} display="flex" justifyContent="space-between">
           {activeStep > 0 && (
-            <Button onClick={handleBack} variant="outlined">
+            <Button onClick={handleBack} 
+            sx={{
+                        backgroundColor: "#c0a676", // Button background color
+                        color: "#ffffff", // Text color
+                        "&:hover": {
+                          backgroundColor: "#bbae9d", // Hover state color
+                          
+                        },
+                      }}>
               Back
             </Button>
           )}
           {activeStep < steps.length - 1 ? (
-            <Button onClick={handleNext} variant="contained">
+            <Button onClick={handleNext} 
+            sx={{
+                        backgroundColor: "#c0a676", // Button background color
+                        color: "#ffffff", // Text color
+                        "&:hover": {
+                          backgroundColor: "#bbae9d", // Hover state color
+                          
+                        },
+                      }}>
               Next
             </Button>
           ) : (
             <Button
               onClick={handleSubmit}
-              variant="contained"
-              color="primary"
+              sx={{
+                        backgroundColor: "#c0a676", // Button background color
+                        color: "#ffffff", // Text color
+                        "&:hover": {
+                          backgroundColor: "#bbae9d", // Hover state color
+                          
+                        },
+                      }}
               disabled={loading}
             >
               {loading ? <CircularProgress size={24} /> : 'Submit'}

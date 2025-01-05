@@ -53,12 +53,18 @@ const ShowAllShelters = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(endpoints.DELETE_SHELTER(id), { headers: endpoints.getAuthHeader() });
+          await axios.delete(endpoints.DELETE_SHELTER(id), {
+            headers: endpoints.getAuthHeader(),
+          });
           Swal.fire("Deleted!", "The shelter has been deleted.", "success");
           fetchShelters(); // Refresh shelters list after deletion
         } catch (error) {
           console.error("Error deleting shelter:", error);
-          Swal.fire("Error!", "Something went wrong. Please try again.", "error");
+          Swal.fire(
+            "Error!",
+            "Something went wrong. Please try again.",
+            "error"
+          );
         }
       }
     });
@@ -82,7 +88,7 @@ const ShowAllShelters = () => {
 
   return (
     <>
-      <Typography variant="h5"  gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Shelters List
       </Typography>
       <TableContainer component={Paper}>
@@ -125,15 +131,29 @@ const ShowAllShelters = () => {
                     <Button
                       onClick={() => handleEdit(shelter._id)}
                       variant="contained"
-                      color="primary"
-                      sx={{ mr: 1 }}
+                      sx={{
+                        marginRight: 1,
+                        backgroundColor: "#bbae9d", // Button background color
+                        color: "#ffffff", // Text color
+                        "&:hover": {
+                          backgroundColor: "#c0a676", // Hover state color
+                          
+                        },
+                      }}
                     >
                       Edit
                     </Button>
                     <Button
                       onClick={() => handleDelete(shelter._id)}
                       variant="contained"
-                      color="secondary"
+                      sx={{
+                        
+                        backgroundColor: "#947d34", // Button background color
+                        color: "#ffffff", // Text color
+                        "&:hover": {
+                          backgroundColor: "#c0a676", // Hover state color
+                        },
+                      }}
                     >
                       Delete
                     </Button>
