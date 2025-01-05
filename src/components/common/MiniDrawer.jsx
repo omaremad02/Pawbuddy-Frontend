@@ -20,7 +20,7 @@ import { Grid, Button } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-const drawerWidth = 240;
+const drawerWidth = 360 ;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
